@@ -14,6 +14,20 @@ body {
     margin: 0;
     flex-direction: column; 
     padding: 0;
+    padding: 50px 0px; 
+}
+
+#experiences-body {
+    font-family: 'Roboto Mono', monospace;
+    background-color: white;
+    color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    flex-direction: column; 
+    padding: 50px 0px; /* Add some padding to the top and bottom of the body */
 }
 
 .content {
@@ -39,7 +53,10 @@ body {
 #name {
     font-size: 2em;
     font-weight: bold;
+    word-wrap: break-word;  /* Allows unbreakable words to be broken */
+    overflow-wrap: break-word; /* Same, but with better browser support */
 }
+
 
 #name_home {
     font-size: 2.5em;
@@ -92,10 +109,31 @@ body {
     text-decoration: none;
 }
 
+.back-button {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    color: grey;
+    text-decoration: none;
+    font-size: 1em;
+}
+
+
 @media screen and (max-width: 1024px) {
+
+    #experiences_body {
+        padding: 150px 0px; /* Increase the padding on smaller screens */
+    }
+
+    .back-button {
+        top: 20px;
+        left: 10px;
+        font-size: 0.8em;
+    }
 
     .line {
         color: black;
+        overflow: auto;
     }
 
     .content{
@@ -109,7 +147,11 @@ body {
     
     #name_home, #name {
         font-size: 1.5em;
-        padding-bottom: 5px;
+        font-weight: bold;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        white-space: normal; /* Add this line */
+        overflow: auto; /* Add this line */
     }
     
     #heading {
