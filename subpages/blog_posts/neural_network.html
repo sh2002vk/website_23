@@ -17,6 +17,19 @@
             <p>So the next best step? Build a simple NN from scratch. You can follow my progress <a href="https://github.com/sh2002vk/infancy">here.</a> </p>
             <p>Update: I was going to implement it in Cpp but I think to improve the probability I actually complete the
             project, it's better for me to start with python and focus more on how nets work instead of debugging memory dumps all the time.</p>
+
+            <div class="line" id="subheading_home">Graph VS Matrix Implementation</div>
+            <p>You can express the layered model of a neural network through graphs (nodes and weighted edges that are inter-connected) or represent it as a matrix. 
+            Matrix implementaions require less compute by leveraging matrix operations, but limit the modifications you can make to how the backpropogation adjusts weights, etc.
+            For now I'll be using the matrix implementaion. </p>
+
+            <div class="line" id="subheading_home">Forward propogation</div>
+            <p>This part is not too complex, if you take the time to draw it out, you'll see its just matrix multiplication and a few non-linear functions (sigmoid and softmax). One part is the 
+                decision on range for initial randomized weights. Even though weights will be updated through backpropogation, the goal is to have the smoothest possible gradient descent. Having too large a 
+                range for possible starting values might lead to exploding gradients. For now I'll set my range for initial values between 0 and 1, but I'm gonna look into
+                <a href="https://machinelearningmastery.com/weight-initialization-for-deep-learning-neural-networks/"> He and Golort initializion </a> once the initial implementaion is complete. 
+            </p>
+
         </div>
     </div>
 </body>
