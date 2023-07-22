@@ -13,25 +13,34 @@
         <div class="line" id="heading_home">Building a Neural Network from scratch</div>
         <div class="line" id="body">
             [2023-07-03] 
-            <p>I'm trying to improve my knowledge on backpropogation. I feel like my current understanding relies too much on "black-box" abstractions. </p>
-            <p>So the next best step? Build a simple NN from scratch. You can follow my progress <a href="https://github.com/sh2002vk/infancy">here.</a> </p>
-            <p>Update: I was going to implement it in Cpp but I think to improve the probability I actually complete the
-            project, it's better for me to start with python and focus more on how nets work instead of debugging memory dumps all the time.</p>
+            <p> I'm trying to improve my knowledge on backpropogation. I feel like my current understanding relies too much on "black-box" abstractions.
+                So the next best step? Build a simple NN from scratch. <br> 
+                <a href="https://github.com/sh2002vk/infancy">My code on GitHub</a> <br>
+                <a href="https://scarlet-uranium-4df.notion.site/infancy-a-neural-net-from-scratch-80263381d0654c2c99e33c2c2eae582e?pvs=4">Technical Specifics on Notion</a> 
+            </p>
 
             [2023-07-08]
             <div class="line" id="subheading_home">Graph VS Matrix Implementation</div>
             <p>You can express the layered model of a neural network through graphs (nodes and weighted edges that are inter-connected) or represent it as a matrix. 
-            Matrix implementaions require less compute by leveraging matrix operations, but limit the modifications you can make to how the backpropogation adjusts weights, etc.
+            Matrix implementaions require less compute by leveraging matrix operations, but they limit the modifications you can make to how the backpropogation adjusts weights, etc.
             For now I'll be using the matrix implementaion. </p>
 
             <div class="line" id="subheading_home">Forward propogation</div>
-            <p>This part is not too complex, if you take the time to draw it out, you'll see its just matrix multiplication and a few non-linear functions (sigmoid and softmax). One interesting part is the 
-                decision on the range of initial randomized weights. Even though weights will be updated through backpropogation, the goal is to have the smoothest possible gradient descent. Having too large a 
-                range for possible starting values might lead to exploding gradients. For now I'll set my range for initial values between 0 and 1, but I'm gonna look into
-                <a href="https://machinelearningmastery.com/weight-initialization-for-deep-learning-neural-networks/">He and Golort initializion</a> once the initial implementaion is complete. 
+            <p> Forward prop is how the network generates a probability vector for your given inputs. The input layer is just the data you're passing in, and then every layer after that is 
+                a combination of a bias value, the previous layer's value and a connection weight between the nodes. <br>
+                To put this into an equation, A<sub>L</sub> = ReLU(A<sub>L-1</sub> * W<sub>L</sub> + B<sub>L</sub>). There's a detailed visual on the notion page for reference.
             </p>
 
-            <p>I'm going to put detailed findings <a href="https://scarlet-uranium-4df.notion.site/infancy-a-neural-net-from-scratch-80263381d0654c2c99e33c2c2eae582e?pvs=4">here</a> and will leave this for overall thoughts instead. 
+            <div class="line" id="subheading_home">Back propogation</div>
+            <p> The specifics of this are a little complex, so theres detailed info on the notion page. But basically, we are trying to reduce the loss function of the network, by using the gradient descent
+                algorithm, an iterative approach that adjusts weights based on the difference between generated outputs and expected outputs, using derivatives to find the minimum value of a function.
+            </p>
+
+            [2023-07-22]
+            <div class="line" id="subheading_home">Overall thoughts</div>
+            <p> Today I finished all parts of the network, including back propogation. Unfortunately, its performance is not great, you can review specifics including the loss progression on the notion page.
+                I'm going to experiment and improve performance over the next few weeks, I suspect something might be wrong with how the network is ingesting data. But now I'm going to focus on the OS project.
+                Thanks for joining the journey! 
             </p>
 
         </div>
