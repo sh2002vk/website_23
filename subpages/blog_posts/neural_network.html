@@ -1,49 +1,51 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <link rel="stylesheet" type="text/css" href="../../styles/styles.css">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap');
-    </style>
-    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Building a Neural Network from scratch — Shubhankar Vakde</title>
+    <link rel="icon" type="image/x-icon" href="../../assets/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap">
+    <link rel="stylesheet" href="../../styles/styles.css">
 </head>
 <body>
-    <a href="../blog.html" class="back-button">&#60back</a>
-    <div class="content">
-        <div class="line" id="heading_home">Building a Neural Network from scratch</div>
-        <div class="line" id="body">
-            [2023-07-03] 
-            <p> I'm trying to improve my knowledge on backpropogation. I feel like my current understanding relies too much on "black-box" abstractions.
-                So the next best step? Build a simple NN from scratch. <br> 
-                <a href="https://github.com/sh2002vk/infancy">My code on GitHub</a> <br>
-                <a href="https://scarlet-uranium-4df.notion.site/infancy-a-neural-net-from-scratch-80263381d0654c2c99e33c2c2eae582e?pvs=4">Technical Specifics on Notion</a> 
+    <a href="../blog.html" class="back-button">&lt; back</a>
+    <main class="content article">
+        <h1 class="article-title">Building a Neural Network from scratch</h1>
+        <article class="body">
+            <div class="date">[2023-07-03]</div>
+            <p>I'm trying to improve my knowledge of backpropagation. I feel like my current understanding relies too much on "black-box" abstractions.
+                So the next best step? Build a simple NN from scratch.<br>
+                <a href="https://github.com/sh2002vk/infancy">My code on GitHub</a><br>
+                <a href="https://scarlet-uranium-4df.notion.site/infancy-a-neural-net-from-scratch-80263381d0654c2c99e33c2c2eae582e?pvs=4">Technical specifics on Notion</a>
             </p>
 
-            [2023-07-08]
-            <div class="line" id="subheading_home">Graph VS Matrix Implementation</div>
-            <p>You can express the layered model of a neural network through graphs (nodes and weighted edges that are inter-connected) or represent it as a matrix. 
-            Matrix implementaions require less compute by leveraging matrix operations, but they limit the modifications you can make to how the backpropogation adjusts weights, etc.
-            For now I'll be using the matrix implementaion. </p>
+            <div class="date">[2023-07-08]</div>
+            <h2>Graph vs Matrix implementation</h2>
+            <p>You can express the layered model of a neural network as a graph (nodes and weighted edges that are inter-connected) or represent it as a matrix.
+                Matrix implementations require less compute by leveraging matrix operations, but they limit the modifications you can make to how backpropagation adjusts weights, etc.
+                For now I'll be using the matrix implementation.</p>
 
-            <div class="line" id="subheading_home">Forward propogation</div>
-            <p> Forward prop is how the network generates a probability vector for your given inputs. The input layer is just the data you're passing in, and then every layer after that is 
-                a combination of a bias value, the previous layer's value and a connection weight between the nodes. <br>
-                To put this into an equation, A<sub>L</sub> = ReLU(A<sub>L-1</sub> * W<sub>L</sub> + B<sub>L</sub>). There's a detailed visual on the notion page for reference.
+            <h2>Forward propagation</h2>
+            <p>Forward prop is how the network generates a probability vector for your given inputs. The input layer is just the data you're passing in, and every layer after that is
+                a combination of a bias value, the previous layer's value and a connection weight between the nodes.<br>
+                To put this into an equation, A<sub>L</sub> = ReLU(A<sub>L-1</sub> * W<sub>L</sub> + B<sub>L</sub>). There's a detailed visual on the Notion page for reference.
             </p>
 
-            <div class="line" id="subheading_home">Back propogation</div>
-            <p> The specifics of this are a little complex, so theres detailed info on the notion page. But basically, we are trying to reduce the loss function of the network, by using the gradient descent
-                algorithm, an iterative approach that adjusts weights based on the difference between generated outputs and expected outputs, using derivatives to find the minimum value of a function.
+            <h2>Backpropagation</h2>
+            <p>The specifics of this are a little complex, so there's detailed info on the Notion page. But basically, we are trying to reduce the loss function of the network using gradient descent:
+                an iterative approach that adjusts weights based on the difference between generated and expected outputs, using derivatives to find the minimum of a function.
             </p>
 
-            [2023-07-22]
-            <div class="line" id="subheading_home">Overall thoughts</div>
-            <p> Today I finished all parts of the network, including back propogation. Unfortunately, its performance is not great, you can review specifics including the loss progression on the notion page.
-                I'm going to experiment and improve performance over the next few weeks, I suspect something might be wrong with how the network is ingesting data. But now I'm going to focus on the OS project.
-                Thanks for joining the journey! 
+            <div class="date">[2023-07-22]</div>
+            <h2>Overall thoughts</h2>
+            <p>Today I finished all parts of the network, including backpropagation. Unfortunately, its performance is not great; you can review specifics, including the loss progression, on the Notion page.
+                I'm going to experiment and improve performance over the next few weeks. I suspect something might be wrong with how the network is ingesting data. But now I'm going to focus on the OS project.
+                Thanks for joining the journey!
             </p>
-
-        </div>
-    </div>
+        </article>
+    </main>
 </body>
 </html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Teaching an RC car to drive itself — Shubhankar Vakde</title>
+    <meta name="description" content="Building a self-driving 1/16 RC car with a Raspberry Pi, an ESP32 and behavioural cloning.">
+    <link rel="icon" type="image/x-icon" href="../../assets/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap">
+    <link rel="stylesheet" href="../../styles/styles.css">
+</head>
+<body>
+    <a href="../blog.html" class="back-button">&lt; back</a>
+    <main class="content article">
+        <h1 class="article-title">Teaching an RC car to drive itself</h1>
+        <article class="body">
+            <p>The goal is simple to say: put a camera on a small RC car, drive it around for a while, and have it learn to drive the same way on its own.
+                Getting there has taken a few detours.</p>
+
+            <div class="date">[2024-11]</div>
+            <h2>Starting in simulation</h2>
+            <p>I started in <a href="https://cyberbotics.com/">Webots</a>, a robot simulator, with a car in a little city world. The first controller
+                did nothing smarter than steer along a cosine wave, but it got me comfortable with the steering/throttle loop before any hardware could break.
+                A couple more simulated worlds later, I wanted something real.</p>
+
+            <div class="date">[2025]</div>
+            <h2>Picking a brain</h2>
+            <p>I prototyped an iOS app to use an iPhone as the onboard computer (great camera, great chip, already in my pocket), then settled on a
+                Raspberry Pi with a camera module, which is much easier to bolt onto a car and hack on.</p>
+
+            <div class="date">[2026]</div>
+            <h2>The real car</h2>
+<pre>
+ camera --> [ Raspberry Pi ] --> web dashboard
+                  |
+              WiFi / HTTP
+                  v
+ RC receiver --> [ ESP32 ] --> steering servo
+                           --> motor (ESC)
+</pre>
+            <ul>
+                <li>A <strong>1/16 RC car</strong> as the chassis.</li>
+                <li>An <strong>ESP32</strong> drives the steering servo and motor controller. It also reads the normal RC receiver, so I can always grab the transmitter and override the car.</li>
+                <li>A <strong>Raspberry Pi</strong> handles the camera and serves a small dashboard: live video, drive controls, telemetry and a record button. It talks to the ESP32 over the ESP32's own WiFi network.</li>
+            </ul>
+
+            <h2>Learning by copying</h2>
+            <p>The plan is behavioural cloning, the same idea as NVIDIA's PilotNet: a small CNN that takes a camera frame and outputs a steering angle.
+                To train it, I drive the car by hand and record what I did.</p>
+            <ul>
+                <li>Frames are recorded at 20 Hz and downscaled to 320x240 (about one frame every 10-15 cm of travel).</li>
+                <li>Each frame is labelled with steering and throttle normalised to -1..1, taken from what the servos were <em>actually</em> doing, not what was requested. That matters, because manual driving is exactly when the two differ.</li>
+                <li>A small inspection script checks each recorded session (dropped frames, dead stretches, label ranges) before it's allowed anywhere near training.</li>
+                <li>Autonomous throttle is deliberately capped for now. Crashes are cheap at a walking pace.</li>
+            </ul>
+
+            <h2>Where it's at</h2>
+            <p>The hardware works and I'm in the collecting-laps phase. Next up: train the first model, put it on the Pi, and see how many laps it lasts
+                before it finds a wall. I'll update this post as it goes.</p>
+        </article>
+    </main>
+</body>
+</html>

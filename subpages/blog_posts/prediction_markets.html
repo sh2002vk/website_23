@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Building a prediction market trading engine — Shubhankar Vakde</title>
+    <meta name="description" content="Notes from building an event-driven trading engine for prediction markets.">
+    <link rel="icon" type="image/x-icon" href="../../assets/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap">
+    <link rel="stylesheet" href="../../styles/styles.css">
+</head>
+<body>
+    <a href="../blog.html" class="back-button">&lt; back</a>
+    <main class="content article">
+        <h1 class="article-title">Building a prediction market trading engine</h1>
+        <article class="body">
+            <p>Prediction markets are a weirdly clean sandbox for trading. Every contract is a yes/no question that pays $1 or $0,
+                so a price of 37&cent; is just the crowd saying "37% likely". If you think you know the probability better than the crowd,
+                you have a trade. That framing pulled me in, and it's been my main side project for most of 2026.</p>
+
+            <div class="date">[2025-12]</div>
+            <h2>v0: looking for free money</h2>
+            <p>I started with a small backtester on Polymarket data and the most naive strategy possible: if the best YES ask plus the best NO ask
+                is under $1, buy both and lock in the difference.</p>
+            <p>It never showed up. At the top of the book the market was efficient enough that this kind of arb basically didn't exist.
+                Useful lesson early: there's no free money, so any edge has to come from actually modelling something better than the market does.</p>
+
+            <div class="date">[2026-02 &rarr; now]</div>
+            <h2>v1: an event-driven engine</h2>
+            <p>I moved to Kalshi and rebuilt from scratch as three small services that talk through Redis:</p>
+<pre>
+ exchange websocket
+         |
+         v
+ [ market data ] --> live order books in Redis
+         |
+   "book changed"
+         v
+ [ signals ] --> order requests
+         |
+         v
+ [ order mgmt ] --> risk checks --> exchange
+</pre>
+            <ul>
+                <li><strong>Market data</strong> holds an async websocket open to the exchange, keeps every order book live in Redis, and emits an event whenever a book changes.</li>
+                <li><strong>Signals</strong> is a pool of workers that only wake up for books that actually changed, run the strategies against them, and send order requests.</li>
+                <li><strong>Order management</strong> is the only thing allowed to touch real money. It runs risk checks, places orders, keeps a ledger, and reconciles against the exchange.</li>
+            </ul>
+            <p>Today it tracks ~670 live markets with around 200ms average signal-processing latency, and I've benchmarked my models against
+                market-implied probabilities on 1.3M historical trades.</p>
+
+            <h2>Design rules that saved me</h2>
+            <ul>
+                <li><strong>Strategies are untrusted.</strong> They can ask for anything; the order manager decides what actually happens. Limits live in one place.</li>
+                <li><strong>Paper and live share one code path.</strong> Promoting a strategy means flipping a flag, not rewriting it, so what I tested is what runs.</li>
+                <li><strong>Fail safe, not fail open.</strong> Stale data means no trade. A broken dependency means conservative limits. There's a master kill switch.</li>
+                <li><strong>Keep it cheap.</strong> The whole thing runs on small hosted instances and a shared Redis. Hobby budgets force simple designs.</li>
+            </ul>
+
+            <h2>What I've learned so far</h2>
+            <ul>
+                <li>The strategy is maybe 10% of the code. The other 90% is plumbing: reconnects, out-of-order updates, partial fills, and making sure my idea of my positions matches the exchange's.</li>
+                <li>Markets are mostly well calibrated. Most ideas die quietly in the backtest, which is exactly where you want them to die.</li>
+                <li>Writing a design doc for a side project felt like overkill until the third time it saved me from a bad change.</li>
+            </ul>
+            <p>I'm keeping the actual strategies to myself for now, but happy to nerd out about the architecture. <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#115;&#104;&#50;&#48;&#48;&#50;&#118;&#107;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;">Reach out!</a></p>
+        </article>
+    </main>
+</body>
+</html>
